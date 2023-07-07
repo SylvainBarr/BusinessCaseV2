@@ -1,0 +1,72 @@
+App\Entity\User:
+  user_{9..100}:
+    email (unique): "<email()>"
+    roles: "[]"
+    password: "<password()>"
+    createdAt: "<dateTimeInInterval('now', '-3 years')>"
+    profilePicture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+    nickname: "<userName()>"
+
+App\Entity\Genre:
+  genre0:
+    name: 'Heavy Metal'
+  genre1:
+    name: 'Nu Metal'
+  genre2:
+    name: 'MetalCore'
+  genre3:
+    name: 'Punk Hardcore'
+  genre4:
+    name: 'Trash Metal'
+  genre5:
+    name: 'Death Metal'
+  genre6:
+    name: 'Death Metal Mélodique'
+
+App\Entity\Groupe:
+  groupe0:
+    name: 'Disturbed'
+    genre : "@genre*"
+  groupe1:
+    name: 'Bullet For My Valentine'
+    genre : "@genre*"
+  groupe2:
+    name: 'Trivium'
+    genre : "@genre*"
+  groupe3:
+    name: 'Amon Amarth'
+    genre : "@genre*"
+  groupe4:
+    name: 'As I Lay Dying'
+    genre : "@genre*"
+  groupe5:
+    name: 'Children of Bodom'
+    genre : "@genre*"
+  groupe6:
+    name: 'Korn'
+    genre : "@genre*"
+  groupe7:
+    name: 'Lorna Shore'
+    genre : "@genre*"
+
+App\Entity\Nft:
+  nft{0..1000}:
+    image: "https://fr.shopping.rakuten.com/photo/1913862496.jpg"
+    name: "<word()>"
+    dateDrop: "<dateTimeInInterval('now', '-3 years')>"
+    anneeAlbum: "<numberBetween(1980, 2023)>"
+    identificationToken: "<sha256()>"
+    groupe: "@groupe*"
+
+App\Entity\Acquisition:
+  acquisition{0..2000}:
+    value: "<randomFloat(2, 0.01, 100)>"
+    isSold: "<boolean()>"
+    nft: "@nft*"
+    user: "@user*"
+
+App\Entity\CoursNft:
+  coursNft{0..3000}:
+    createdAt: "<dateTimeBetween('-1 week', 'now')>"
+    value: "<randomFloat(2, 0.01, 100)>"
+    nft: "@nft*"
