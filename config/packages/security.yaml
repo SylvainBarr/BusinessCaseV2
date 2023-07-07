@@ -30,7 +30,9 @@ security:
         api:
             pattern: ^/api
             stateless: true
-            jwt: ~
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
 
     # Easy way to control access for large sections of your site
@@ -38,7 +40,7 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^api, roles : IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles : IS_AUTHENTICATED_FULLY }
 #        - { path: ^/api/register, roles: PUBLIC_ACCESS
           # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
