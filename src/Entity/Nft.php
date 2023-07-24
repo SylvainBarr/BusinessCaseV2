@@ -8,9 +8,32 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: NftRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'post' => [
+            'denormalization_context' => [
+                'groups' => 'nft:post'
+            ]
+        ],
+        'get' => [
+            'normalization_context' => [
+                'groups' => 'nft:list'
+            ]
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'nft:item'
+            ],
+        ],
+        'put',
+        'delete'
+    ]
+)]
 class Nft
 {
     #[ORM\Id]
@@ -19,29 +42,41 @@ class Nft
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private ?\DateTimeInterface $dateDrop = null;
 
     #[ORM\Column]
+    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private ?int $anneeAlbum = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?string $identificationToken = null;
 
     #[ORM\OneToMany(mappedBy: 'nft', targetEntity: CoursNft::class)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private Collection $coursNfts;
 
     #[ORM\OneToMany(mappedBy: 'nft', targetEntity: Acquisition::class)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private Collection $acquisitions;
 
     #[ORM\ManyToOne(inversedBy: 'nfts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private ?Groupe $groupe = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -182,6 +217,18 @@ class Nft
     public function setGroupe(?Groupe $groupe): static
     {
         $this->groupe = $groupe;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

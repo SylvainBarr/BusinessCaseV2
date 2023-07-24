@@ -1,3 +1,22 @@
+App\Entity\City:
+  city1:
+    name: 'Saint Etienne'
+    postalCode: '42000'
+  city2:
+    name: 'Lyon'
+    postalCode: '69000'
+  city3:
+    name: 'Paris'
+    postalCode: '75000'
+  city4:
+    name: 'Saint Jean Bonnefonds'
+    postalCode: '42650'
+
+App\Entity\Address:
+  address_{0..100}:
+    firstLine: "<streetAddress()>"
+    city: "@city*"
+
 App\Entity\User:
   user_{0..100}:
     email (unique): "<email()>"
@@ -6,48 +25,79 @@ App\Entity\User:
     createdAt: "<dateTimeInInterval('now', '-3 years')>"
     profilePicture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
     nickname: "<userName()>"
+    birthDate: "<dateTimeInInterval('now -18 years', '-20 years')>"
+    address: "@address*"
+  user101:
+    email (unique): "test@test.fr"
+    roles: "[]"
+    password: 'à modifier'
+    createdAt: "<dateTimeInInterval('now', '-3 years')>"
+    profilePicture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+    nickname: "test"
+    birthDate: "<dateTimeInInterval('now -18 years', '-20 years')>"
+    address: "@address*"
+#    password du user test : 'test123'
+#    hash du password : '$2y$13$Vp69wmNmGSTG3GdM81XCsevd52xh4oPDHdMucSAcjEb4by8/Wnk9m'
 
 App\Entity\Genre:
   genre0:
     name: 'Heavy Metal'
+    slug: 'heavy-metal'
   genre1:
     name: 'Nu Metal'
+    slug: 'nu-metal'
   genre2:
     name: 'MetalCore'
+    slug: 'metalcore'
   genre3:
     name: 'Punk Hardcore'
+    slug: 'punk-hardcore'
   genre4:
     name: 'Trash Metal'
+    slug: 'trash-metal'
+    parentsGenres: '[@genre1]'
   genre5:
     name: 'Death Metal'
+    slug: 'death-metal'
+    parentsGenres: '[@genre1]'
   genre6:
     name: 'Death Metal Mélodique'
+    slug: 'death-metal-melodique'
+    parentsGenres: '[@genre5]'
 
 App\Entity\Groupe:
   groupe0:
     name: 'Disturbed'
     genre : "@genre*"
+    slug: 'disturbed'
   groupe1:
     name: 'Bullet For My Valentine'
     genre : "@genre*"
+    slug: 'bullet-for-my-valentine'
   groupe2:
     name: 'Trivium'
     genre : "@genre*"
+    slug: 'trivium'
   groupe3:
     name: 'Amon Amarth'
     genre : "@genre*"
+    slug: 'amon-amarth'
   groupe4:
     name: 'As I Lay Dying'
     genre : "@genre*"
+    slug: 'as-i-lay-dying'
   groupe5:
     name: 'Children of Bodom'
     genre : "@genre*"
+    slug: 'children-of-bodom'
   groupe6:
     name: 'Korn'
     genre : "@genre*"
+    slug: 'korn'
   groupe7:
     name: 'Lorna Shore'
     genre : "@genre*"
+    slug: 'lorna-shore'
 
 App\Entity\Nft:
   nft{0..1000}:
@@ -57,6 +107,7 @@ App\Entity\Nft:
     anneeAlbum: "<numberBetween(1980, 2023)>"
     identificationToken: "<sha256()>"
     groupe: "@groupe*"
+    slug: "<word()>"
 
 App\Entity\Acquisition:
   acquisition{0..2000}:
@@ -70,3 +121,4 @@ App\Entity\CoursNft:
     createdAt: "<dateTimeBetween('-1 week', 'now')>"
     value: "<randomFloat(2, 0.01, 100)>"
     nft: "@nft*"
+

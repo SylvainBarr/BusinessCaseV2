@@ -7,9 +7,25 @@ use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GenreRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => [
+                'groups' => 'genre:list'
+            ]
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'genre:item'
+            ],
+        ],
+    ]
+)]
 class Genre
 {
     #[ORM\Id]
@@ -18,13 +34,20 @@ class Genre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'genre', targetEntity: Groupe::class)]
+    #[Groups(['genre:list', 'genre:item'])]
     private Collection $groupes;
 
     #[ORM\ManyToMany(targetEntity: self::class)]
+    #[Groups(['genre:list', 'genre:item'])]
     private Collection $parentsGenres;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -99,6 +122,18 @@ class Genre
     public function removeParentsGenre(self $parentsGenre): static
     {
         $this->parentsGenres->removeElement($parentsGenre);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

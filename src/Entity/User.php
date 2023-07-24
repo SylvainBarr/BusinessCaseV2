@@ -10,9 +10,28 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'post' => [
+            'denormalization_context' => [
+                'groups' => 'user:post'
+            ]
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'user:item'
+            ],
+        ],
+        'put',
+        'delete'
+
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,6 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:item', 'user:post'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -36,13 +56,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([ 'nft:item', 'nft:list', 'acquisition:item', 'acquisition:list', 'user:item', 'user:post'])]
     private ?string $profilePicture = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups([ 'nft:item', 'nft:list', 'acquisition:item', 'acquisition:list', 'user:item', 'user:post'])]
     private ?string $nickname = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Acquisition::class)]
+    #[Groups(['user:item'])]
     private Collection $acquisitions;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $birthDate = null;
+
+    #[ORM\ManyToOne]
+    #[Groups(['user:item'])]
+    private ?Address $address = null;
 
     public function __construct(){
         $this->createdAt = new \DateTime();
@@ -204,6 +234,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $acquisition->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(\DateTimeInterface $birthDate): static
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }

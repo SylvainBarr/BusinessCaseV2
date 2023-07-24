@@ -5,9 +5,25 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AcquisitionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AcquisitionRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => [
+                'groups' => 'acquisition:list'
+            ]
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'acquisition:item'
+            ],
+        ],
+        ]
+)]
 class Acquisition
 {
     #[ORM\Id]
@@ -16,17 +32,21 @@ class Acquisition
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item', 'user:item'])]
     private ?float $value = null;
 
     #[ORM\Column]
+    #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item'])]
     private ?bool $isSold = null;
 
     #[ORM\ManyToOne(inversedBy: 'acquisitions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'acquisitions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['acquisition:list', 'acquisition:item', 'user:item'])]
     private ?Nft $nft = null;
 
     public function getId(): ?int

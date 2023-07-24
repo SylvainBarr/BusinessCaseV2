@@ -6,9 +6,30 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CoursNftRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CoursNftRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'post' => [
+            'denormalization_context' => [
+                'groups' => 'coursNft:post'
+            ]
+        ],
+        'get' => [
+            'normalization_context' => [
+                'groups' => 'coursNft:list'
+            ]
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'coursNft:item'
+            ],
+        ],
+        ]
+)]
 class CoursNft
 {
     #[ORM\Id]
@@ -17,13 +38,16 @@ class CoursNft
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'coursNft:post'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column]
+    #[Groups([ 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'coursNft:post'])]
     private ?float $value = null;
 
     #[ORM\ManyToOne(inversedBy: 'coursNfts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['coursNft:item', 'coursNft:list', 'coursNft:post'])]
     private ?Nft $nft = null;
 
     public function getId(): ?int

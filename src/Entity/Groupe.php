@@ -7,9 +7,30 @@ use App\Repository\GroupeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'post' => [
+            'denormalization_context' => [
+                'groups' => 'groupe:post'
+            ]
+        ],
+        'get' => [
+            'normalization_context' => [
+                'groups' => 'groupe:list'
+            ]
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'groupe:item'
+            ],
+        ],
+    ]
+)]
 class Groupe
 {
     #[ORM\Id]
@@ -18,14 +39,21 @@ class Groupe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:post', 'groupe:list', 'groupe:item'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Nft::class)]
+    #[Groups(['groupe:item'])]
     private Collection $nfts;
 
     #[ORM\ManyToOne(inversedBy: 'groupes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['nft:item', 'nft:list', 'groupe:post', 'groupe:list', 'groupe:item'])]
     private ?Genre $genre = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:post', 'groupe:list', 'groupe:item'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -87,6 +115,18 @@ class Groupe
     public function setGenre(?Genre $genre): static
     {
         $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
