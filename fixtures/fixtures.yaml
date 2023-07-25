@@ -29,8 +29,8 @@ App\Entity\User:
     address: "@address*"
   user101:
     email (unique): "test@test.fr"
-    roles: "[]"
-    password: 'à modifier'
+    roles: '["ROLE_ADMIN"]'
+    password: '\\$2y\\$13\\$Vp69wmNmGSTG3GdM81XCsevd52xh4oPDHdMucSAcjEb4by8/Wnk9m'
     createdAt: "<dateTimeInInterval('now', '-3 years')>"
     profilePicture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
     nickname: "test"
