@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\CoursNftRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,6 +31,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ],
         ],
         ]
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: [
+    'nft.id' => 'exact',
+],
 )]
 class CoursNft
 {

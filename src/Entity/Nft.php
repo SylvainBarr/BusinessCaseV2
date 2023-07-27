@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\NftRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NftRepository::class)]
 #[ApiResource(
@@ -34,7 +38,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'delete'
     ]
 )]
-class Nft
+#[ApiFilter(
+    SearchFilter::class, properties: [
+    'name' => 'partial',
+    'anneeAlbum' => 'exact',
+    'identificationToken' => 'exact',
+    'groupe.name'=> 'partial',
+    'groupe.genre.name' => 'partial'
+],
+)]
+#[ApiFilter(
+    OrderFilter::class, properties: [
+    'dateDrop',
+    'groupe.name',
+    'name',
+    'groupe.genre.name'
+]
+)]
+class Nft implements SlugInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,22 +63,28 @@ class Nft
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Ce nom doit être renseigné')]
     #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "L'image doit être renseignée obligatoirement")]
     #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: "Date de création obligatoire")]
+    #[Assert\Date(message: "Merci de renseigner une date")]
     #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private ?\DateTimeInterface $dateDrop = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Année de l'album obligatoire")]
     #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private ?int $anneeAlbum = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le token doit être renseigné")]
     #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?string $identificationToken = null;
 
@@ -71,6 +98,7 @@ class Nft
 
     #[ORM\ManyToOne(inversedBy: 'nfts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: "Le groupe doit être renseigné")]
     #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private ?Groupe $groupe = null;
 

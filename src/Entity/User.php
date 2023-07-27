@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
@@ -41,6 +42,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['user:item', 'user:post'])]
+    #[Assert\NotBlank(message: "L'adresse email doit être renseignée")]
+    #[Assert\Email(message: "Merci de renseigner une adresse au bon format")]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -50,6 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le mot de passe doit être renseigné")]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -60,6 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $profilePicture = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le pseudonyme doit être renseignée")]
     #[Groups([ 'nft:item', 'nft:list', 'acquisition:item', 'acquisition:list', 'user:item', 'user:post'])]
     private ?string $nickname = null;
 
@@ -68,6 +73,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $acquisitions;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: "Le pseudonyme doit être renseignée")]
+    #[Assert\Date(message: "Merci de renseigner une date au bon format")]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\ManyToOne]
@@ -204,6 +211,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    #[Groups(['user:item'])]
     public function isAdmin():bool{
         return in_array("ROLE_ADMIN", $this->roles);
     }

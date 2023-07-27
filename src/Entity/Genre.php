@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GenreRepository::class)]
 #[ApiResource(
@@ -26,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ],
     ]
 )]
-class Genre
+class Genre implements SlugInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,6 +35,7 @@ class Genre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom doit être renseignée")]
     #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
     private ?string $name = null;
 

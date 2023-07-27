@@ -42,27 +42,27 @@ App\Entity\User:
 App\Entity\Genre:
   genre0:
     name: 'Heavy Metal'
-    slug: 'heavy-metal'
+#    slug: 'heavy-metal'
   genre1:
     name: 'Nu Metal'
-    slug: 'nu-metal'
+#    slug: 'nu-metal'
   genre2:
     name: 'MetalCore'
-    slug: 'metalcore'
+#    slug: 'metalcore'
   genre3:
     name: 'Punk Hardcore'
-    slug: 'punk-hardcore'
+#    slug: 'punk-hardcore'
   genre4:
     name: 'Trash Metal'
-    slug: 'trash-metal'
+#    slug: 'trash-metal'
     parentsGenres: '[@genre1]'
   genre5:
     name: 'Death Metal'
-    slug: 'death-metal'
+#    slug: 'death-metal'
     parentsGenres: '[@genre1]'
   genre6:
     name: 'Death Metal Mélodique'
-    slug: 'death-metal-melodique'
+#    slug: 'death-metal-melodique'
     parentsGenres: '[@genre5]'
 
 App\Entity\Groupe:

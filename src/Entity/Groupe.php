@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\GroupeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
 #[ApiResource(
@@ -31,7 +34,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ],
     ]
 )]
-class Groupe
+#[ApiFilter(
+    SearchFilter::class, properties: [
+    'genre.id' => 'exact',
+],
+)]
+class Groupe implements SlugInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,6 +47,7 @@ class Groupe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom doit être renseignée")]
     #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:post', 'groupe:list', 'groupe:item'])]
     private ?string $name = null;
 
@@ -48,6 +57,7 @@ class Groupe
 
     #[ORM\ManyToOne(inversedBy: 'groupes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: "Le genre doit être renseignée")]
     #[Groups(['nft:item', 'nft:list', 'groupe:post', 'groupe:list', 'groupe:item'])]
     private ?Genre $genre = null;
 
