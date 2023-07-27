@@ -25,7 +25,6 @@
     
 
 ***
-***
 
 
 > Bien penser à effectuer un ```yarn watch``` avant de lancer le serveur avec ```symfony serve```
