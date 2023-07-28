@@ -2,11 +2,29 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
+#[ApiResource(
+    collectionOperations: [
+        'post' => [
+            'denormalization_context' => [
+                'groups' => 'address:post'
+            ]
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'address:item'
+            ],
+        ],
+        'put',
+    ]
+)]
 class Address
 {
     #[ORM\Id]
@@ -15,16 +33,16 @@ class Address
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:item'])]
+    #[Groups(['user:item', 'address:item', 'address:post'])]
     private ?string $firstLine = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:item'])]
+    #[Groups(['user:item', 'address:item', 'address:post'])]
     private ?string $secondLine = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['user:item'])]
+    #[Groups(['user:item', 'address:item', 'address:post'])]
     private ?City $city = null;
 
     public function getId(): ?int
