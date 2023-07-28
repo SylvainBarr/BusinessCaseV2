@@ -30,7 +30,7 @@
 > Bien penser à effectuer un ```yarn watch``` avant de lancer le serveur avec ```symfony serve```
 
 
-
+>Générer vos token JWT privés et publics avec la commande ```symfony console lexik:jwt:generate-keypair```
 
 > Un utilisateur test a été créé dans le but de tester la connexion avec le token JWT sur l'API
 > * email : ```test@test.fr```

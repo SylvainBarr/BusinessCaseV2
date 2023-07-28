@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     'name' => 'partial',
     'anneeAlbum' => 'exact',
     'identificationToken' => 'exact',
-    'groupe.name'=> 'partial',
+    'groupe.name'=> 'exact',
     'groupe.genre.name' => 'partial'
 ],
 )]

@@ -32,7 +32,6 @@ class PrePersistEventSubscriber implements EventSubscriber
             $object->setSlug($this->textService->slugify($object->getName()));
         }
 
-
     }
 
 }
