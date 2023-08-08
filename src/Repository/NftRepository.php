@@ -39,6 +39,15 @@ class NftRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function getLastNFTs(?int $limit = 4) : array{
+        return $this->createQueryBuilder('n')
+            ->orderBy('n.dateDrop', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 //    /**
 //     * @return Nft[] Returns an array of Nft objects
 //     */

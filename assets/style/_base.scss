@@ -1,0 +1,9 @@
+body, HTML{
+  background-color: $background;
+  color: $font-color-main;
+  font-family: $fontmain;
+  overflow-x: hidden;
+  h1, h2, h3{
+    font-family: $fontheadings;
+  }
+}

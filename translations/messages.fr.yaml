@@ -1,0 +1,16 @@
+user:
+  table:
+    email: "Email"
+    nickname: 'Pseudonyme'
+    createdAt: 'Date de création'
+    birthdate: 'Date de naissance'
+nft:
+  table:
+    name: 'Nom du NFT'
+    groupe: 'Groupe'
+    dateDrop: 'Date de drop'
+admin:
+  dashboard:
+    title: "Tableau d'administration"
+    lastUsers: 'Derniers utilisateurs'
+    lastNfts: 'NFT les plus récents'

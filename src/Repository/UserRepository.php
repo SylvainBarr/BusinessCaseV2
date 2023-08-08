@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -55,6 +56,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->save($user, true);
     }
+
+
+    public function getLastUsers(?int $limit = 4) : array {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getAllUserQuery(): QueryBuilder{
+        return $this->createQueryBuilder('u')
+            ->select('u', 'a', 'add')
+            ->join('u.acquisitions', 'a')
+            ->leftJoin('u.address', 'add')
+            ;
+    }
+
 
 //    /**
 //     * @return User[] Returns an array of User objects

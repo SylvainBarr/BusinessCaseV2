@@ -1,0 +1,14 @@
+.admin-menu{
+  height: 100%;
+  min-height: 100vh;
+  background: $mygradient;
+  a{
+    color: $font-color-main;
+    text-decoration: none;
+    text-shadow: $box-shadow;
+    font-size: 1.3rem;
+    &:hover{
+      color: $font-color-hover;
+    }
+  }
+}

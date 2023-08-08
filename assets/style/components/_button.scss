@@ -1,0 +1,17 @@
+.button{
+  text-decoration: none;
+  color: $font-color-main;
+  padding: 5px 10px;
+  border: none;
+  background-color: transparent;
+  &:hover{
+    color: $font-color-hover;
+  }
+  &.button-outline{
+    border-radius: 5px;
+    border: 1px solid $font-color-main;
+    &:hover{
+      border-color: $font-color-hover;
+    }
+  }
+}

@@ -1,0 +1,58 @@
+table{
+  font-size: .8rem;
+  img{
+    width: 60px;
+  }
+}
+
+th{
+  font-size: .9rem;
+  .sortable, .desc, .asc{
+    text-decoration: none;
+    color: $font-color-main;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .sortable::after{
+    content: ' ⬍';
+  }
+  .desc::after{
+    content : ' ▴';
+  }
+  .asc::after{
+    content : ' ▾';
+  }
+}
+
+
+.pagination {
+  font-size: 1.1em;
+  align-items: center;
+  .current {
+    color: white;
+    border-radius: 3rem;
+    text-decoration: none;
+    padding: 0.2rem 1rem;
+    background: $mygradient;
+    box-shadow: $box-shadow;
+  }
+
+  .page, .first, .last, .previous, .next {
+    > a {
+      color: white;
+      margin-left: 0.2rem;
+      margin-right: 0.2rem;
+      border-radius: 3rem;
+      text-decoration: none;
+      padding: 0.3rem 1rem;
+      background: $mygradient;
+
+      &:hover {
+        background:  $myinvgradient;
+        box-shadow: $box-shadow;
+      }
+    }
+  }
+}
+
