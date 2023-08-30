@@ -57,6 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['user:item', 'user:post'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -75,10 +76,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank(message: "Le pseudonyme doit être renseignée")]
     #[Assert\Date(message: "Merci de renseigner une date au bon format")]
+    #[Groups(['user:item', 'user:post'])]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\ManyToOne]
-    #[Groups(['user:item'])]
+    #[Groups(['user:item', 'user:post'])]
     private ?Address $address = null;
 
     public function __construct(){
