@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Nft{% endblock %}
+
+{% block body %}
+    <div class="container d-flex flex-row justify-content-between">
+        <h1>Liste des Nft</h1>
+        <a href="{{ path('app_nft_new') }}" class="m-3 btn btn-outline-light"><i class="fa-solid fa-plus fa-xl"></i> Nouveau</a>
+    </div>
+
+    <table class="table table-hover table-striped align-middle table-dark">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Image</th>
+                <th>DateDrop</th>
+                <th>AnneeAlbum</th>
+                <th>Slug</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for nft in nfts %}
+            <tr>
+                <td>{{ nft.id }}</td>
+                <td>{{ nft.name }}</td>
+                <td><img src="{{ nft.image }}"></td>
+                <td>{{ nft.dateDrop ? nft.dateDrop|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ nft.anneeAlbum }}</td>
+                <td>{{ nft.slug }}</td>
+                <td>
+                    <div class="d-flex justify-content-center">
+                        <a href="{{ path('app_nft_show', {'id': nft.id}) }}" class="button"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ path('app_nft_edit', {'id': nft.id}) }}" class="button"><i class="fa-solid fa-pen"></i></a>
+                        {{ include('nft/_delete_form.html.twig') }}
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <div class="navigation d-flex justify-content-center my-2">
+        {{ knp_pagination_render(nfts) }}
+    </div>
+{% endblock %}

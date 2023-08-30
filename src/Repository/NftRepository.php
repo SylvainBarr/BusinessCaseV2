@@ -72,4 +72,9 @@ class NftRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function getAllNftQuery()
+    {
+        return $this->createQueryBuilder('n')
+            ;
+    }
 }

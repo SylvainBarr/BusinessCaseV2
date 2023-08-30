@@ -63,4 +63,9 @@ class GenreRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function getAllGenresQuery()
+    {
+        return $this->createQueryBuilder('g')
+            ;
+    }
 }

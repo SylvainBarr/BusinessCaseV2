@@ -14,3 +14,17 @@ admin:
     title: "Tableau d'administration"
     lastUsers: 'Derniers utilisateurs'
     lastNfts: 'NFT les plus récents'
+form:
+  nft:
+    groupe: "Groupe"
+    image: "Image"
+    name: "Nom"
+    dateDrop: 'Date de drop'
+    anneeAlbum: "Année de l'album"
+    token: "Token du NFT"
+  groupe:
+    name: "Nom"
+    genre: "Genre"
+  genre:
+    name: "Nom"
+    genre: "Genres parents"

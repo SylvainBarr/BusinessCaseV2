@@ -63,4 +63,9 @@ class GroupeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function getAllGroupesQuery()
+    {
+        return $this->createQueryBuilder('g')
+            ;
+    }
 }
