@@ -36,7 +36,7 @@ class Genre implements SlugInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Le nom doit être renseignée")]
-    #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
+    #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item', 'nft:item', 'nft:list'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'genre', targetEntity: Groupe::class)]
@@ -48,7 +48,7 @@ class Genre implements SlugInterface
     private Collection $parentsGenres;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
+    #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item', 'nft:item', 'nft:list'])]
     private ?string $slug = null;
 
     public function __construct()

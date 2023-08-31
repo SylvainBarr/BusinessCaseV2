@@ -89,11 +89,10 @@ class Nft implements SlugInterface
     private ?string $identificationToken = null;
 
     #[ORM\OneToMany(mappedBy: 'nft', targetEntity: CoursNft::class)]
-    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
     private Collection $coursNfts;
 
     #[ORM\OneToMany(mappedBy: 'nft', targetEntity: Acquisition::class)]
-    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
+    #[Groups(['nft:item', 'nft:list'])]
     private Collection $acquisitions;
 
     #[ORM\ManyToOne(inversedBy: 'nfts')]

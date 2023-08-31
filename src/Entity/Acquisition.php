@@ -12,6 +12,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: AcquisitionRepository::class)]
 #[ApiResource(
     collectionOperations: [
+        'post' => [
+            'denormalization_context' => [
+                'groups' => 'acquisition:post'
+            ]
+        ],
         'get' => [
             'normalization_context' => [
                 'groups' => 'acquisition:list'
@@ -29,6 +34,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiFilter(
     SearchFilter::class, properties: [
     'nft.id' => 'exact',
+    'user.id' => 'exact',
+    'isSold' => 'exact'
 ],
 )]
 class Acquisition
@@ -39,21 +46,21 @@ class Acquisition
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item', 'user:item'])]
+    #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item', 'user:item', 'acquisition:post'])]
     private ?float $value = null;
 
     #[ORM\Column]
     #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item'])]
-    private ?bool $isSold = null;
+    private ?bool $isSold = false;
 
     #[ORM\ManyToOne(inversedBy: 'acquisitions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item'])]
+    #[Groups(['nft:item', 'nft:list', 'acquisition:list', 'acquisition:item', 'acquisition:post'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'acquisitions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['acquisition:list', 'acquisition:item', 'user:item'])]
+    #[Groups(['acquisition:list', 'acquisition:item', 'user:item', 'acquisition:post'])]
     private ?Nft $nft = null;
 
     public function getId(): ?int

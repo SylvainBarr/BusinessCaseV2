@@ -2,10 +2,21 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    collectionOperations: [],
+    itemOperations: [
+        'get'=> [
+            'normalization_context' => [
+                'groups' => 'city:item'
+            ],
+        ],
+    ]
+)]
 #[ORM\Entity(repositoryClass: CityRepository::class)]
 class City
 {
@@ -15,11 +26,11 @@ class City
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:item', 'address:item'])]
+    #[Groups(['user:item', 'address:item', 'city:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 6)]
-    #[Groups(['user:item', 'address:item'])]
+    #[Groups(['user:item', 'address:item', 'city:item'])]
     private ?string $postalCode = null;
 
     public function getId(): ?int

@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,6 +34,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         'delete'
 
     ]
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: [
+    'email' => 'exact',
+    'nickname' => 'exact'
+],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -65,16 +73,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $profilePicture = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le pseudonyme doit être renseignée")]
+    #[Assert\NotBlank(message: "Le pseudonyme doit être renseigné")]
     #[Groups([ 'nft:item', 'nft:list', 'acquisition:item', 'acquisition:list', 'user:item', 'user:post'])]
     private ?string $nickname = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Acquisition::class)]
-    #[Groups(['user:item'])]
     private Collection $acquisitions;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\NotBlank(message: "Le pseudonyme doit être renseignée")]
+    #[Assert\NotBlank(message: "Le pseudonyme doit être renseigné")]
     #[Assert\Date(message: "Merci de renseigner une date au bon format")]
     #[Groups(['user:item', 'user:post'])]
     private ?\DateTimeInterface $birthDate = null;
