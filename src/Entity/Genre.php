@@ -32,6 +32,7 @@ class Genre implements SlugInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['genre:list', 'genre:item', 'groupe:list', 'groupe:item', 'nft:item', 'nft:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

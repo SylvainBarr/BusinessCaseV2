@@ -46,6 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([ 'nft:item', 'nft:list', 'acquisition:item', 'acquisition:list', 'user:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -62,6 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank(message: "Le mot de passe doit être renseigné")]
+    #[Groups(['user:post'])]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

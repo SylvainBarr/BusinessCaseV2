@@ -30,6 +30,7 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:item', 'address:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

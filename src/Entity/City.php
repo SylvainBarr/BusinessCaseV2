@@ -23,6 +23,7 @@ class City
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['city:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

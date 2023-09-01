@@ -39,7 +39,7 @@ class Groupe implements SlugInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nft:post'])]
+    #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

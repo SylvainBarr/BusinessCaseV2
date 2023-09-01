@@ -63,7 +63,7 @@ class Nft implements SlugInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
+    #[Groups([ 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
