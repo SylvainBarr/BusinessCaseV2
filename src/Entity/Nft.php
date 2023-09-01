@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 use App\Repository\NftRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -41,10 +43,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(
     SearchFilter::class, properties: [
     'name' => 'partial',
-    'anneeAlbum' => 'exact',
-    'identificationToken' => 'exact',
     'groupe.name'=> 'exact',
-    'groupe.genre.name' => 'partial'
+    'groupe.genre.name' => 'partial',
+    'slug' => 'exact'
 ],
 )]
 #[ApiFilter(
@@ -52,14 +53,17 @@ use Symfony\Component\Validator\Constraints as Assert;
     'dateDrop',
     'groupe.name',
     'name',
-    'groupe.genre.name'
+    'groupe.genre.name',
+    'anneeAlbum'
 ]
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['acquisitions.isSold'])]
 class Nft implements SlugInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['nft:post', 'nft:item', 'nft:list', 'coursNft:item', 'coursNft:list', 'acquisition:item', 'acquisition:list', 'groupe:item', 'user:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -75,12 +79,12 @@ class Nft implements SlugInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank(message: "Date de création obligatoire")]
     #[Assert\Date(message: "Merci de renseigner une date")]
-    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
+    #[Groups(['nft:post', 'nft:item'])]
     private ?\DateTimeInterface $dateDrop = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: "Année de l'album obligatoire")]
-    #[Groups(['nft:post', 'nft:item', 'nft:list'])]
+    #[Groups(['nft:post', 'nft:item'])]
     private ?int $anneeAlbum = null;
 
     #[ORM\Column(length: 255)]
@@ -92,7 +96,7 @@ class Nft implements SlugInterface
     private Collection $coursNfts;
 
     #[ORM\OneToMany(mappedBy: 'nft', targetEntity: Acquisition::class)]
-    #[Groups(['nft:item', 'nft:list'])]
+    #[Groups(['nft:item'])]
     private Collection $acquisitions;
 
     #[ORM\ManyToOne(inversedBy: 'nfts')]

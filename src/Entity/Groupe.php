@@ -15,11 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        'post' => [
-            'denormalization_context' => [
-                'groups' => 'groupe:post'
-            ]
-        ],
         'get' => [
             'normalization_context' => [
                 'groups' => 'groupe:list'
@@ -49,7 +44,7 @@ class Groupe implements SlugInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Le nom doit être renseignée")]
-    #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:post', 'groupe:list', 'groupe:item'])]
+    #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Nft::class)]
@@ -59,11 +54,11 @@ class Groupe implements SlugInterface
     #[ORM\ManyToOne(inversedBy: 'groupes')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank(message: "Le genre doit être renseignée")]
-    #[Groups(['nft:item', 'nft:list', 'groupe:post', 'groupe:list', 'groupe:item'])]
+    #[Groups(['nft:item', 'nft:list', 'groupe:list', 'groupe:item'])]
     private ?Genre $genre = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:post', 'groupe:list', 'groupe:item'])]
+    #[Groups(['nft:item', 'nft:list', 'genre:list', 'genre:item', 'groupe:list', 'groupe:item'])]
     private ?string $slug = null;
 
     public function __construct()

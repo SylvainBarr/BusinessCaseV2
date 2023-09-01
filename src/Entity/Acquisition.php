@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 use App\Repository\AcquisitionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -31,6 +33,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ],
         ]
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['isSold'])]
 #[ApiFilter(
     SearchFilter::class, properties: [
     'nft.id' => 'exact',
