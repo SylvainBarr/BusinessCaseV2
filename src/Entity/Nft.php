@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(
     SearchFilter::class, properties: [
     'name' => 'partial',
-    'groupe.name'=> 'exact',
+    'groupe.name'=> 'partial',
     'groupe.genre.name' => 'partial',
     'slug' => 'exact'
 ],

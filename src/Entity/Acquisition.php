@@ -31,7 +31,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 'groups' => 'acquisition:item'
             ],
         ],
-        ]
+        ],
+    paginationClientEnabled: true,
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isSold'])]
 #[ApiFilter(
