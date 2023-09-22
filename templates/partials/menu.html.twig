@@ -1,6 +1,10 @@
 <a href="http://localhost/BusinessCase-main/public/" class="ms-5"><img class="w-25" src="/img/logo-businesscase.webp" alt="Logo du site Burn Your Crypto"> </a>
-<a href="{{ path('app_admin_home') }}">Dashboard</a>
-<a href="{{ path('app_user_index') }}">Utilisateurs</a>
-<a href="{{ path('app_nft_index') }}">NFT</a>
-<a href="{{ path('app_groupe_index') }}">Groupes</a>
-<a href="{{ path('app_genre_index') }}">Genres</a>
+
+{%  if app.user %}
+    <a href="{{ path('app_admin_home') }}">Dashboard</a>
+    <a href="{{ path('app_user_index') }}">Utilisateurs</a>
+    <a href="{{ path('app_nft_index') }}">NFT</a>
+    <a href="{{ path('app_groupe_index') }}">Groupes</a>
+    <a href="{{ path('app_genre_index') }}">Genres</a>
+    <a class="admin-logout-link" href="{{ path('app_logout') }}"> Déconnexion</a>
+{% endif %}
