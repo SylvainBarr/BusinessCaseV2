@@ -23,11 +23,7 @@
             <tr>
                 <th>Nickname</th>
                 <td>{{ user.nickname }}</td>
-            </tr>
-            <tr>
-                <th>BirthDate</th>
-                <td>{{ user.birthDate ? user.birthDate|date('d-m-Y') : '' }}</td>
-            </tr>
+            </tr>S
             <tr>
                 <th>Admin</th>
                 <td>{% if user.admin %}Oui{% else %}Non{% endif %}</td>

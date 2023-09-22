@@ -67,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['user:item', 'user:post'])]
+    #[Groups(['user:item'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -82,11 +82,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Acquisition::class)]
     private Collection $acquisitions;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\NotBlank(message: "Le pseudonyme doit être renseigné")]
-    #[Assert\Date(message: "Merci de renseigner une date au bon format")]
-    #[Groups(['user:item', 'user:post'])]
-    private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\ManyToOne]
     #[Groups(['user:item', 'user:post'])]
@@ -258,17 +253,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
-    {
-        return $this->birthDate;
-    }
 
-    public function setBirthDate(\DateTimeInterface $birthDate): static
-    {
-        $this->birthDate = $birthDate;
-
-        return $this;
-    }
 
     public function getAddress(): ?Address
     {

@@ -17,10 +17,6 @@ class UserType extends AbstractType
             ->add('password')
             ->add('profilePicture')
             ->add('nickname')
-            ->add('birthDate', DateType::class, [
-                'required' => true,
-                'widget' => 'single_text',
-            ])
         ;
     }
 

@@ -24,11 +24,6 @@
                         'u.createdAt'
                     )|raw }}</th>
                 <th class="w-25">Image de profil</th>
-                <th>{{ knp_pagination_sortable(
-                        users,
-                        'user.table.birthdate'|trans,
-                        'u.birthDate'
-                    )|raw }}</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -39,7 +34,6 @@
                 <td>{{ user.nickname }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('d-m-Y') : '' }}</td>
                 <td><img src="{{ user.profilePicture }}" class="w-25"></td>
-                <td>{{ user.birthDate ? user.birthDate|date('d-m-Y') : '' }}</td>
                 <td>
                     <div class="d-flex justify-content-center">
                         <a href="{{ path('app_user_show', {'id': user.id}) }}" class="button"><i class="fa-solid fa-eye"></i></a>
