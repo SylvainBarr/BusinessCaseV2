@@ -3,46 +3,36 @@
 namespace App\Controller;
 
 use App\Entity\Nft;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class ApiNftController extends AbstractController
 {
-    #[Route('/api/nfts/create', name: 'app_api_nfts', methods: ["POST"])]
-    public function createNft(Request $request, SerializerInterface $serializer, ValidatorInterface $validator): Response
+
+    public function __invoke(Request $request, FileUploader $fileUploader): Nft
     {
-        $data = $request->getContent();
-
-        $nft = $serializer->deserialize($data, Nft::class, 'json');
-
-        // Validez l'entité Nft
-        $errors = $validator->validate($nft);
-
-        if (count($errors) > 0) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[$error->getPropertyPath()] = $error->getMessage();
-            }
-            return $this->json(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
+        $uploadedFile = $request->files->get('file');
+        if (!$uploadedFile) {
+            throw new BadRequestHttpException('Image requise !');
         }
 
-        // Gérez le téléchargement et le stockage de l'image
-        $imageFile = $request->files->get('image');
-        if ($imageFile) {
-            $imageFileName = uniqid().'.'.$imageFile->getClientOriginalExtension();
-            $imageFile->move($this->getParameter('nft_image_directory'), $imageFileName);
-            $nft->setImage($imageFileName);
-        }
+        $nft = new Nft();
+        $nft->setName($request->get('name'));
+        $nft->setDateDrop($request->get('dateDrop'));
+        $nft->setAnneeAlbum($request->get('anneeAlbum'));
+        $nft->setIdentificationToken($request->get('identificationToken'));
+        $nft->setGroupe($request->get('group'));
+        $nft->setSlug($request->get('slug'));
 
-        // Enregistrez l'entité Nft en base de données
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($nft);
-        $entityManager->flush();
+        $nft->setImage($fileUploader->uploadFile($uploadedFile, '/image/'));
 
-        return $this->json($nft, Response::HTTP_CREATED);
+        return $nft;
+
+
+
     }
+
 }

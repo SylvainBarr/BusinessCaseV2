@@ -10,3 +10,4 @@ api_platform:
                 name: Authorization
                 type: header
     show_webby: false
+
